@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getFirestore, collection, updateDoc, getDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -57,19 +57,45 @@ function login(){
   document.getElementById("login").style.display = "none";
   document.querySelector("body").classList.remove("login");
   onSnapshot(collection(db, "User"), (users) => {
-    // let arr = [];
-    // users.forEach((doc) => {
-    //   arr.push(doc.data());
-    // })
-    // arr.sort((a, b) => a.type - b.type);
-    // arr.forEach((doc, i) => {
-    //     document.querySelectorAll(".score span")[i].innerText = doc.score;
-    // })
-    // console.log(arr);
+    let arr = [];
+    users.forEach((doc) => {
+      arr.push(doc.data());
+    })
+    arr.sort((a, b) => a.type - b.type);
+    arr.forEach((doc, i) => {
+        document.querySelectorAll(".score span")[i].innerText = doc.score;
+    })
+  })
+  document.querySelectorAll(".pm-btn").forEach((d, i) => {
+    d.addEventListener("click", function(){
+        let s = prompt("점수를 입력하세요", 0);
+        if(s == null || s == "") return;
+        s = parseInt(s);
+        if(isNaN(s)) return;
+        if(s < 0) return;
+        if(i % 2 == 0){
+            s = -s;
+        }
+        let sc = parseInt(document.querySelectorAll(".score span")[Math.floor(i / 2)].innerText);
+        updateDoc(doc(db, "User", "Group" + Math.floor(i / 2 + 1)), {
+            score: sc + s
+        })
+    })
   })
 }
 
-
+function addminus(i){
+    let arr = [];
+    onSnapshot(collection(db, "User"), (users) => {
+        users.forEach((doc) => {
+            arr.push(doc.data());
+        })
+        arr.sort((a, b) => a.type - b.type);
+        arr.forEach((doc, i) => {
+            document.querySelectorAll(".score span")[i].innerText = doc.score;
+        })
+    })
+}
 
 
 
