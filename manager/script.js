@@ -67,7 +67,8 @@ function login(){
     })
   })
   document.querySelectorAll(".pm-btn").forEach((d, i) => {
-    d.addEventListener("click", function(){
+    d.addEventListener("touchstart", function(e){
+        e.preventDefault();
         let s = prompt("점수를 입력하세요", 0);
         if(s == null || s == "") return;
         s = parseInt(s);
@@ -80,7 +81,7 @@ function login(){
         updateDoc(doc(db, "User", "Group" + Math.floor(i / 2 + 1)), {
             score: sc + s
         })
-    })
+    }, { passive: false });
   })
 }
 
