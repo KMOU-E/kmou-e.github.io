@@ -50,13 +50,14 @@ document.getElementById("submit").addEventListener("click", async () => {
 function login(){
   document.getElementById("login").style.display = "none";
   onSnapshot(collection(db, "User"), (users) => {
+    let arr = [];
     users.forEach((doc) => {
-      if(doc.data().a != ''){
-        document.getElementById("user").innerHTML += "<div class='user' id='" + doc.id + "'><h1>" + doc.data().name + "</h1><p>" + doc.data().a + "</p></div>";
-        document.getElementById(doc.id).addEventListener("click", function(){
-          window.location.href = "user.html#" + doc.id;
-        })
-      }
+      arr.push(doc.data());
     })
+    arr.sort((a, b) => a.type - b.type);
+    arr.forEach((doc, i) => {
+        document.querySelectorAll(".score span")[i].innerText = doc.score;
+    })
+    // console.log(arr);
   })
 }

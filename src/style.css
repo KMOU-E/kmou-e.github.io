@@ -2,8 +2,15 @@
     margin: 0;
 }
 
+html{
+    height: calc(100% - 20px);
+}
+
 body {
     width: 100%;
+    padding-top: 50px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 #login {
@@ -15,6 +22,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    z-index: 1000;
+    top: 0;
 }
 
 #password {
@@ -34,7 +43,8 @@ body {
 }
 
 #submit {
-    padding: 12px 30px;
+    padding: 12px 20px;
+    white-space: nowrap;
     background-color: #4e9aff;
     color: white;
     font-size: 16px;
@@ -64,6 +74,7 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
+    z-index: 100;
 }
 
 #manager {
@@ -86,8 +97,55 @@ header {
 }
 
 #content {
-    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
     padding: 10px;
     background-color: #f9f9f9;
-    min-height: calc(100vh - 60px);
+    min-height: 100%;
+    overflow-y: scroll;
+}
+
+
+@media (min-width: 768px) {
+    #content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .team-card {
+        height: 100%;
+        box-sizing: border-box;
+    }
+}
+
+
+.team-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+}
+
+
+.team-card h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.score {
+    font-size: 18px;
+    color: #333;
+}
+
+.score span {
+    font-weight: bold;
+    color: #007acc;
 }
