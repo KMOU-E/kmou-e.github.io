@@ -18,7 +18,7 @@ const auth = getAuth();
 window.onload = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log("로그인 상태:", user.uid);
+      // console.log("로그인 상태:", user.uid);
       if(user.uid === "8HRRxvXS3ph55hPVBaX4DRkDwoi2") {
         login();
       }
@@ -36,7 +36,7 @@ document.getElementById("submit").addEventListener("click", async () => {
             const userCredential = await signInWithEmailAndPassword(auth, "test@example.com", sha256(password));
             const user = userCredential.user;
 
-            console.log("로그인 성공:", user.uid);
+            // console.log("로그인 성공:", user.uid);
             login();
         } catch (error) {
             console.error("로그인 실패:", error.message);
@@ -49,6 +49,7 @@ document.getElementById("submit").addEventListener("click", async () => {
 
 function login(){
   document.getElementById("login").style.display = "none";
+  document.querySelector("body").classList.remove("login");
   onSnapshot(collection(db, "User"), (users) => {
     let arr = [];
     users.forEach((doc) => {
@@ -61,3 +62,7 @@ function login(){
     // console.log(arr);
   })
 }
+
+document.getElementById("manager").addEventListener("click", function(){
+  window.location.href = "/manager";
+})

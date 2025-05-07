@@ -13,6 +13,10 @@ body {
     box-sizing: border-box;
 }
 
+body.login {
+    overflow-y: hidden;
+}
+
 #login {
     position: absolute;
     background-color: #fff;
@@ -24,9 +28,18 @@ body {
     gap: 10px;
     z-index: 1000;
     top: 0;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-#password {
+#login div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#password, #id {
     width: 300px;
     padding: 12px 16px;
     font-size: 16px;
@@ -77,6 +90,10 @@ header {
     z-index: 100;
 }
 
+header h1 {
+    user-select: none;
+}
+
 #manager {
     padding: 5px 10px;
     background-color: #fff;
@@ -106,12 +123,12 @@ header {
     overflow-y: scroll;
 }
 
-
 @media (min-width: 768px) {
     #content {
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         align-items: stretch;
+        overflow: hidden;
     }
 
     .team-card {
@@ -119,7 +136,6 @@ header {
         box-sizing: border-box;
     }
 }
-
 
 .team-card {
     background-color: #ffffff;
@@ -133,7 +149,6 @@ header {
 .team-card:hover {
     transform: translateY(-5px);
 }
-
 
 .team-card h2 {
     margin-bottom: 10px;
