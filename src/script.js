@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -14,12 +14,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
+let uids = ["8HRRxvXS3ph55hPVBaX4DRkDwoi2"];
+fetch("./src/uid.json").then((response) => {
+  return response.json();
+}).then((data) => {
+  uids = uids.concat(data);
+})
+
+// const uids = data;
+// console.log(uids);
 
 window.onload = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // console.log("로그인 상태:", user.uid);
-      if(user.uid === "8HRRxvXS3ph55hPVBaX4DRkDwoi2") {
+      if(uids.includes(user.uid)) {
         login();
       }
     } else {
