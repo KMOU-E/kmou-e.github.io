@@ -56,6 +56,41 @@ document.getElementById("submit").addEventListener("click", async () => {
 function login(){
   document.getElementById("login").style.display = "none";
   document.querySelector("body").classList.remove("login");
+  let fee, length, view, all, array;
+  onSnapshot(collection(db, "System"), (users) => {
+    users.forEach((doc) => {
+      fee = doc.data().fee;
+      length = doc.data().length;
+      view = doc.data().view;
+    })
+    document.querySelector("#title h2").innerText = `(1등 시 ${Math.round(all * fee / 100)} 포인트)`;
+    document.getElementById("fee").value = fee;
+    document.querySelectorAll(".race-track").forEach((doc1, i) => {
+      doc1.innerHTML = "";
+      for(let j = 0; j < length; j++){
+        doc1.innerHTML += `<div class="slot"></div>`;
+      }
+      doc1.querySelectorAll(".slot").forEach((doc2, j) => {
+        let t = false;
+        doc2.addEventListener("touchstart", function(e){
+          e.preventDefault();
+          t = true;
+          updateDoc(doc(db, "Race", "Horse" + (i + 1)), {
+            location: j + 1
+          })
+        }, { passive: false })
+        doc2.addEventListener("click", function(){
+          if(t){
+            t = false;
+            return;
+          }
+          updateDoc(doc(db, "Race", "Horse" + (i + 1)), {
+            location: j + 1
+          })
+        })
+      });
+    })
+  })
   onSnapshot(collection(db, "User"), (users) => {
     let arr = [];
     users.forEach((doc) => {
@@ -66,22 +101,91 @@ function login(){
         document.querySelectorAll(".score span")[i].innerText = doc.score;
     })
   })
+  onSnapshot(collection(db, "Race"), (users) => {
+    let arr = [], sum = [];
+    users.forEach((doc) => {
+      arr.push(doc.data());
+    })
+    arr.sort((a, b) => a.type - b.type);
+    array = arr;
+    arr.forEach((doc, i) => {
+      if(doc.location != 0){
+        document.querySelectorAll(".race-track")[i].querySelectorAll(".slot").forEach((doc2, j) => {
+          if(j == doc.location - 1){
+            doc2.classList.add("active");
+          }else{
+            doc2.classList.remove("active");
+          }
+        })
+      }
+      let a = 0;
+      doc.point.forEach((doc2, j) => {
+        a += doc2;
+        document.querySelectorAll(".bet-odds")[j].querySelectorAll(".betting-odds")[i].innerText = doc2;
+      })
+      sum.push(a);
+      document.querySelectorAll(".odds .point")[i].innerText = a;
+    })
+    all = 0;
+    sum.forEach((doc) => {
+      all += doc;
+    })
+    sum.forEach((doc, i) => {
+      document.querySelectorAll(".odds .fee")[i].innerText = (doc == 0 ? '0' : Math.round(all / doc * 100) / 100) + "배";
+    })
+    document.querySelector("#title h2").innerText = `(1등 시 ${Math.round(all * fee / 100)} 포인트)`;
+  })
   document.querySelectorAll(".pm-btn").forEach((d, i) => {
     d.addEventListener("touchstart", function(e){
+      e.preventDefault();
+      let s = prompt("점수를 입력하세요", 0);
+      if(s == null || s == "") return;
+      s = parseInt(s);
+      if(isNaN(s)) return;
+      if(s < 0) return;
+      if(i % 2 == 0){
+          s = -s;
+      }
+      let sc = parseInt(document.querySelectorAll(".score span")[Math.floor(i / 2)].innerText);
+      updateDoc(doc(db, "User", "Group" + Math.floor(i / 2 + 1)), {
+          score: sc + s
+      })
+    }, { passive: false });
+  })
+  document.querySelectorAll(".race-view").forEach((doc1, i) => {
+    doc1.addEventListener("touchstart", function(e){
+      e.preventDefault();
+      updateDoc(doc(db, "System", "Race"), {
+        view: i == 0 ? true : false
+      })
+    }, { passive: false })
+  })
+  document.getElementById("fee-submit").addEventListener("touchstart", function(e){
+    e.preventDefault();
+    let fee = parseInt(document.getElementById("fee").value);
+    updateDoc(doc(db, "System", "Race"), {
+      fee: fee
+    })
+  }, { passive: false })
+  document.querySelectorAll(".bet-odds").forEach((doc1, i) => {
+    doc1.querySelectorAll(".betting-odds").forEach((doc2, j) => {
+      doc2.addEventListener("touchstart", function(e){
         e.preventDefault();
-        let s = prompt("점수를 입력하세요", 0);
+        let s = prompt("배팅할 포인트를 입력하세요", 0);
         if(s == null || s == "") return;
         s = parseInt(s);
         if(isNaN(s)) return;
         if(s < 0) return;
-        if(i % 2 == 0){
-            s = -s;
-        }
-        let sc = parseInt(document.querySelectorAll(".score span")[Math.floor(i / 2)].innerText);
-        updateDoc(doc(db, "User", "Group" + Math.floor(i / 2 + 1)), {
-            score: sc + s
+        let p = array[j].point;
+        p[i] += s;
+        updateDoc(doc(db, "Race", "Horse" + (j + 1)), {
+          point: p
         })
-    }, { passive: false });
+        updateDoc(doc(db, "User", "Group" + (i + 1)), {
+          score: parseInt(document.querySelectorAll(".score span")[j].innerText) - s
+        })
+      }, { passive: false })
+    })
   })
 }
 

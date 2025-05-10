@@ -249,24 +249,6 @@ header h1 {
     font-size: 0.8em;
 }
 
-@media (min-width: 768px) {
-    #content {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        align-items: stretch;
-        overflow: hidden;
-    }
-
-    .team-card {
-        height: 100%;
-        box-sizing: border-box;
-    }
-    
-    .team h2 {
-        font-size: 1.2em;
-    }
-}
-
 #betting-title {
     display: flex;
     align-items: center;
@@ -305,4 +287,141 @@ header h1 {
     flex-direction: row;
     width: 100%;
     gap: 1px;
+}
+
+#race-view {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.race-view {
+    background-color: #4e9aff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.race-view:hover {
+    background-color: #357ab7;
+}
+
+.race-view:active {
+    background-color: #2c6280;
+}
+
+#race-fee {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+#race-feee {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#fee {
+    width: 100px;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#fee-submit {
+    padding: 12px 20px;
+    white-space: nowrap;
+    background-color: #4e9aff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#fee-submit:hover {
+    background-color: #357ab7;
+}
+
+#fee-submit:active {
+    background-color: #2c6280;
+}
+
+#race-vic {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(10px, 1fr));
+    margin-top: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 10px;
+    gap: 3px;
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
+.race-vic {
+    background-color: #4e9aff;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.race-vic:hover {
+    background-color: #357ab7;
+}
+
+.race-vic:active {
+    background-color: #2c6280;
+}
+
+@media (min-width: 768px) {
+    #content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        align-items: stretch;
+        overflow: hidden;
+    }
+
+    .team-card {
+        height: 100%;
+        box-sizing: border-box;
+    }
+    
+    .team h2 {
+        font-size: 1.2em;
+    }
+
+    #race-vic {
+        display: flex;
+    }
 }

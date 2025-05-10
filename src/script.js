@@ -110,7 +110,7 @@ function login(){
       all += doc;
     })
     sum.forEach((doc, i) => {
-      document.querySelectorAll(".odds .fee")[i].innerText = (doc == 0 ? '?' : Math.round(all / doc * 100) / 100) + "배";
+      document.querySelectorAll(".odds .fee")[i].innerText = (doc == 0 ? '0' : Math.round(all / doc * 100) / 100) + "배";
     })
     document.querySelector("#title h2").innerText = `(1등 시 ${Math.round(all * fee / 100)} 포인트)`;
   })
