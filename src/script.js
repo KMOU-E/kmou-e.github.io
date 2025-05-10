@@ -58,6 +58,27 @@ document.getElementById("submit").addEventListener("click", async () => {
 function login(){
   document.getElementById("login").style.display = "none";
   document.querySelector("body").classList.remove("login");
+  let fee, length, view, all;
+  onSnapshot(collection(db, "System"), (users) => {
+    users.forEach((doc) => {
+      fee = doc.data().fee;
+      length = doc.data().length;
+      view = doc.data().view;
+    })
+    if(view){
+      document.getElementById("race").classList.remove("hidden");
+    }else{
+      document.getElementById("race").classList.add("hidden");
+    }
+    document.querySelector("#title h2").innerText = `(1등 시 ${Math.round(all * fee / 100)} 포인트)`;
+    document.querySelectorAll(".race-track").forEach((doc, i) => {
+      doc.innerHTML = "";
+      for(let j = 0; j < length; j++){
+        doc.innerHTML += `<div class="slot"></div>`;
+      }
+    })
+    console.log(fee, length);
+  })
   onSnapshot(collection(db, "User"), (users) => {
     let arr = [];
     users.forEach((doc) => {
@@ -67,7 +88,31 @@ function login(){
     arr.forEach((doc, i) => {
         document.querySelectorAll(".score span")[i].innerText = doc.score;
     })
-    // console.log(arr);
+  })
+  onSnapshot(collection(db, "Race"), (users) => {
+    let arr = [], sum = [];
+    users.forEach((doc) => {
+      arr.push(doc.data());
+    })
+    arr.sort((a, b) => a.type - b.type);
+    arr.forEach((doc, i) => {
+      if(doc.location != 0) document.querySelectorAll(".race-track")[i].querySelectorAll(".slot")[doc.location - 1].classList.add("active");
+      let a = 0;
+      doc.point.forEach((doc2, j) => {
+        a += doc2;
+        document.querySelectorAll(".bet-odds")[j].querySelectorAll(".betting-odds")[i].innerText = doc2;
+      })
+      sum.push(a);
+      document.querySelectorAll(".odds .point")[i].innerText = a;
+    })
+    all = 0;
+    sum.forEach((doc) => {
+      all += doc;
+    })
+    sum.forEach((doc, i) => {
+      document.querySelectorAll(".odds .fee")[i].innerText = (doc == 0 ? '?' : Math.round(all / doc * 100) / 100) + "배";
+    })
+    document.querySelector("#title h2").innerText = `(1등 시 ${Math.round(all * fee / 100)} 포인트)`;
   })
 }
 
