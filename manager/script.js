@@ -187,6 +187,32 @@ function login(){
       }, { passive: false })
     })
   })
+  document.querySelectorAll(".race-vic").forEach((doc1, i) => {
+    doc1.addEventListener("touchstart", function(e){
+      e.preventDefault();
+      updateDoc(doc(db, "User", "Group" + (i + 1)), {
+        score: parseInt(document.querySelectorAll(".score span")[i].innerText) + Math.round(all * fee / 100)
+      })
+      let pp = 0;
+      array.map(x => x.point)[i].forEach((doc2, j) => {
+        pp += doc2;
+      })
+      array.map(x => x.point)[i].forEach((doc2, j) => {
+        if(doc2 == 0) return;
+        updateDoc(doc(db, "User", "Group" + (j + 1)), {
+          score: parseInt(document.querySelectorAll(".score span")[j].innerText) + Math.round(all * fee / 100 * doc2 / pp)
+        })
+        console.log(doc2/ pp)
+      })
+      for(let j = 1; j <= 6; j++){
+        updateDoc(doc(db, "Race", "Horse" + j), {
+          location: 1,
+          point: [0, 0, 0, 0, 0, 0]
+        })
+      }
+      // 
+    }, { passive: false })
+  })
 }
 
 function addminus(i){
